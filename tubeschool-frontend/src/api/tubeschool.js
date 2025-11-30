@@ -43,6 +43,12 @@ export const tubeschoolAPI = {
     return response.data;
   },
 
+  // Notes Generation
+  getNotes: async (sessionId) => {
+    const response = await api.get(`/sessions/${sessionId}/notes`);
+    return response.data;
+  },
+
   // Admin - Reset Vector Store
   resetVectorStore: async () => {
     const response = await api.delete('/admin/reset-vectorstore');

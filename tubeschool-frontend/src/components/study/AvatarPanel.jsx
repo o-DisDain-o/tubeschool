@@ -6,7 +6,7 @@ import Button from '../common/Button.jsx';
 // CHANGE: Configuration from your app.js
 const API_CONFIG = {
   serverUrl: "https://api.heygen.com",
-  token: "sk_V2_hgu_kFXB7wOulld_HV9PFfVALCxucs6bV4GqUDainQDz9Dol",
+  token: "sk_V2_hgu_kFXB7wOukkd_HV9PFfVALCxucs6bV4GqUDainQDz9Dol",
   avatarId: "Elenora_IT_Sitting_public"
 };
 

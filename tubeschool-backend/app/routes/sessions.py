@@ -3,8 +3,9 @@ from app.models.schemas import (
     SessionCreate, SessionResponse,
     QuestionRequest, QuestionResponse,
     QuizResponse, QuizSubmission, QuizResult,
-    UserDoubt, QuizQuestion
+    UserDoubt, QuizQuestion, NotesResponse
 )
+from app.services.note_service import NoteService
 from app.services.transcript_service import TranscriptService
 from app.services.vector_service import VectorService
 from app.services.qa_service import QAService
@@ -20,6 +21,7 @@ transcript_service = TranscriptService()
 vector_service = VectorService()
 qa_service = QAService()
 quiz_service = QuizService()
+note_service = NoteService()
 
 # In-memory session storage (for MVP - use DB in production)
 sessions_store = {}
@@ -318,4 +320,54 @@ async def reset_vectorstore():
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to reset vector store: {str(e)}"
+        )
+
+
+@router.get("/sessions/{session_id}/notes", response_model=NotesResponse)
+async def generate_notes(session_id: str):
+    """
+    Generate downloadable study notes for the session.
+    Includes:
+    - Executive Summary
+    - Point-wise detailed key concepts
+    - Review of weak topics (doubts)
+    """
+    try:
+        # Validate session
+        if session_id not in sessions_store:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Session not found"
+            )
+
+        session = sessions_store[session_id]
+        video_id = session['video_id']
+
+        # 1. Fetch all transcript chunks (Full Video Context)
+        video_chunks = vector_service.get_all_video_chunks(video_id)
+
+        if not video_chunks:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Video transcript not found"
+            )
+
+        # 2. Fetch user doubts for this session (Weak Areas)
+        doubts = vector_service.get_session_doubts(session_id)
+
+        # 3. Generate Notes using LLM
+        note_content = note_service.generate_notes(video_chunks, doubts)
+
+        return NotesResponse(
+            session_id=session_id,
+            video_id=video_id,
+            note_content=note_content
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to generate notes: {str(e)}"
         )

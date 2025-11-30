@@ -70,3 +70,8 @@ class UserDoubt(BaseModel):
     timestamp_sec: Optional[int] = None
     topic: Optional[str] = None
     created_at: datetime = datetime.utcnow()
+
+class NotesResponse(BaseModel):
+    session_id: str
+    video_id: str
+    note_content: str

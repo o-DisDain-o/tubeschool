@@ -1,13 +1,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CheckCircle2, XCircle, Award } from 'lucide-react';
+import { CheckCircle2, XCircle, Award, Download, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Card from '../common/Card';
-import Button from '../common/Button';
+import Card from '../common/Card.jsx';
+import Button from '../common/Button.jsx';
+import useDownloadNotes from '../../hooks/useDownloadNotes.js';
 
-export const QuizSummary = ({ result }) => {
+export const QuizSummary = ({ result, sessionId }) => {
   const navigate = useNavigate();
   const { score, total_questions, correct_answers, feedback } = result;
+  
+  // Use the custom hook for downloading notes
+  const { downloadNotes, downloading } = useDownloadNotes();
 
   const getScoreColor = () => {
     if (score >= 80) return 'text-green-400';
@@ -115,13 +119,25 @@ export const QuizSummary = ({ result }) => {
         >
           Study Something Else
         </Button>
+        
         <Button
           variant="secondary"
           size="lg"
-          onClick={() => window.location.reload()}
+          onClick={() => downloadNotes(sessionId)}
+          disabled={downloading}
           className="flex-1"
         >
-          Review Video
+          {downloading ? (
+            <>
+              <Loader2 size={20} className="animate-spin" />
+              Generating PDF...
+            </>
+          ) : (
+            <>
+              <Download size={20} />
+              Download Notes
+            </>
+          )}
         </Button>
       </div>
     </div>

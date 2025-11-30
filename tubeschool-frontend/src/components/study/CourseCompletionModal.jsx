@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ClipboardCheck, Download, X } from 'lucide-react';
+import { ClipboardCheck, Download, X, Loader2, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Button from '../common/Button';
+import Button from '../common/Button.jsx';
+import useDownloadNotes from '../../hooks/useDownloadNotes.js';
 
 export const CourseCompletionModal = ({ show, onClose, sessionId }) => {
   const [activeTab, setActiveTab] = useState('test');
+  const { downloadNotes, downloading } = useDownloadNotes();
   const navigate = useNavigate();
 
   const handleStartTest = () => {
@@ -13,8 +15,7 @@ export const CourseCompletionModal = ({ show, onClose, sessionId }) => {
   };
 
   const handleDownloadNotes = () => {
-    // Placeholder - implement when backend provides notes endpoint
-    alert('Notes download feature coming soon!');
+    downloadNotes(sessionId);
   };
 
   const handleStudySomethingElse = () => {
@@ -75,7 +76,7 @@ export const CourseCompletionModal = ({ show, onClose, sessionId }) => {
                     : 'text-slate-300 hover:text-white'
                 }`}
               >
-                <Download size={16} className="inline mr-2" />
+                <FileText size={16} className="inline mr-2" />
                 Download Notes
               </button>
             </div>
@@ -102,15 +103,28 @@ export const CourseCompletionModal = ({ show, onClose, sessionId }) => {
                 <div className="space-y-4">
                   <p className="text-slate-300">
                     Download AI-generated summary and key points from this video for future reference.
+                    <span className="block text-xs text-slate-500 mt-2">
+                      (Generates a standard PDF with summary, key concepts, and weak areas)
+                    </span>
                   </p>
                   <Button
                     variant="primary"
                     size="lg"
                     onClick={handleDownloadNotes}
+                    disabled={downloading}
                     className="w-full"
                   >
-                    <Download size={20} />
-                    Download Notes
+                    {downloading ? (
+                      <>
+                        <Loader2 size={20} className="animate-spin" />
+                        Generating PDF...
+                      </>
+                    ) : (
+                      <>
+                        <Download size={20} />
+                        Download Notes
+                      </>
+                    )}
                   </Button>
                 </div>
               )}

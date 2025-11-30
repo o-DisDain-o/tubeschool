@@ -212,3 +212,33 @@ class VectorService:
         )
 
         return [point.payload for point in results[0]]
+
+    def get_all_video_chunks(self, video_id: str) -> List[Dict]:
+        """Retrieve all transcript chunks for a video, sorted by index"""
+        chunks = []
+        next_page_offset = None
+
+        # Qdrant scroll API to fetch all records
+        while True:
+            results, next_page_offset = self.client.scroll(
+                collection_name=settings.VIDEO_CHUNKS_COLLECTION,
+                scroll_filter=Filter(
+                    must=[
+                        FieldCondition(
+                            key="video_id",
+                            match=MatchValue(value=video_id)
+                        )
+                    ]
+                ),
+                limit=100,  # Fetch 100 at a time
+                offset=next_page_offset,
+                with_payload=True
+            )
+
+            chunks.extend([point.payload for point in results])
+
+            if next_page_offset is None:
+                break
+
+        # Sort by chunk_index to ensure order so the transcript is continuous
+        return sorted(chunks, key=lambda x: x['chunk_index'])
