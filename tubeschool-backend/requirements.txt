@@ -1,0 +1,33 @@
+# FastAPI and Server
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+python-multipart
+
+# YouTube Transcript
+youtube-transcript-api
+
+# Vector Database
+qdrant-client
+
+# Embeddings
+sentence-transformers
+
+# LLM Integration
+langchain
+langchain_core
+google-generativeai
+
+langchain-google-genai
+
+langchain-huggingface
+transformers
+huggingface-hub
+
+# Utilities
+python-dotenv
+requests
+
+# Optional: For production
+gunicorn
