@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
-import Logo from '../components/common/Logo';
-import Button from '../components/common/Button';
-import QuizQuestion from '../components/test/QuizQuestion';
-import QuizSummary from '../components/test/QuizSummary';
-import tubeschoolAPI from '../api/tubeschool';
+import Logo from '../components/common/Logo.jsx';
+import Button from '../components/common/Button.jsx';
+import QuizQuestion from '../components/test/QuizQuestion.jsx';
+import QuizSummary from '../components/test/QuizSummary.jsx';
+import tubeschoolAPI from '../api/tubeschool.js';
 
 export const TestScreen = () => {
   const { sessionId } = useParams();
@@ -166,7 +166,7 @@ export const TestScreen = () => {
             </div>
           </>
         ) : (
-          <QuizSummary result={result} />
+          <QuizSummary result={result} sessionId={sessionId} />
         )}
       </div>
     </div>

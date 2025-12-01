@@ -6,7 +6,7 @@ import Button from '../common/Button.jsx';
 // CHANGE: Configuration from your app.js
 const API_CONFIG = {
   serverUrl: "https://api.heygen.com",
-  token: "sk_V2_hgu_kFXB7wOukkd_HV9PFfVALCxucs6bV4GqUDainQDz9Dol",
+  token: process.env.REACT_APP_HEYGEN_API_KEY,
   avatarId: "Elenora_IT_Sitting_public"
 };
 
@@ -26,7 +26,7 @@ export const AvatarPanel = ({ textToSpeak }) => {
       if (window.LivekitClient) return;
 
       const script = document.createElement('script');
-      script.src = "https://cdnjs.cloudflare.com/ajax/libs/livekit-client/2.15.7/livekit-client.umd.js";
+      script.src = process.env.REACT_APP_LIVEKIT_CDN_URL;
       script.async = true;
       document.body.appendChild(script);
 

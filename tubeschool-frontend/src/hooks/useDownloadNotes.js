@@ -27,8 +27,8 @@ export const useDownloadNotes = () => {
     try {
       // 1. Load dependencies (html2pdf and marked for markdown parsing)
       await Promise.all([
-        loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js'),
-        loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js')
+        loadScript(process.env.REACT_APP_HTML2PDF_CDN_URL),
+        loadScript(process.env.REACT_APP_MARKED_CDN_URL)
       ]);
 
       // 2. Fetch Notes from API
