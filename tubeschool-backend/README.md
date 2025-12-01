@@ -2,52 +2,6 @@
 
 Transform YouTube videos into interactive learning experiences with AI-powered doubt clearing and personalized quizzes.
 
-## 🚀 Quick Start
-
-### Prerequisites
-- Python 3.9+
-- Qdrant Cloud account (free tier)
-- Google API key for Gemini
-
-### Installation
-
-1. **Clone and setup**
-```bash
-git clone 
-cd tubeschool-backend
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-2. **Environment Setup**
-```bash
-cp .env.example .env
-# Edit .env with your API keys
-```
-
-3. **Get API Keys**
-
-**Qdrant Cloud** (Vector Database):
-- Go to https://cloud.qdrant.io/
-- Sign up for free account
-- Create a cluster
-- Copy URL and API key to `.env`
-
-**Google Gemini** (Free LLM):
-- Go to https://makersuite.google.com/app/apikey
-- Create API key
-- Add to `.env` as `GOOGLE_API_KEY`
-
-4. **Run the server**
-```bash
-uvicorn app.main:app --reload
-```
-
-API will be available at `http://localhost:8000`
-Interactive docs at `http://localhost:8000/docs`
-
----
 
 ## 📡 API Endpoints
 
@@ -128,6 +82,7 @@ tubeschool-backend/
 │   ├── services/
 │   │   ├── transcript_service.py   # YouTube transcript handling
 │   │   ├── vector_service.py       # Qdrant operations
+│   │   ├── note_service.py         # Note generation
 │   │   ├── qa_service.py           # LLM Q&A
 │   │   └── quiz_service.py         # Quiz generation
 │   ├── routes/
