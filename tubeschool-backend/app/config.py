@@ -29,6 +29,8 @@ class Settings(BaseSettings):
     TEMPERATURE: float = 0.7
     MAX_TOKENS: int = 4096
 
+    PORT: int = 8000
+
     class Config:
         env_file = ".env"
         case_sensitive = True
